@@ -1,22 +1,16 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, jsonify, request
+from app.models.account import Account
+from app import db
 
 # Create a blueprint for account-related routes
 account_bp = Blueprint("account", __name__)
 
 @account_bp.route("/")
 def list_accounts():
-    """
-    Example route: List all accounts.
-    """
-    # Fetch accounts from the database (replace with real logic)
-    accounts = [{"id": 1, "name": "John Doe"}, {"id": 2, "name": "Jane Smith"}]
-    return jsonify(accounts)
+    accounts = Account.query.all()
+    return jsonify([{"id": a.id, "date": a.name, "description": a.email} for a in accounts])
 
 @account_bp.route("/<int:id>")
 def account_details(id):
-    """
-    Example route: Get details for a single account.
-    """
-    # Fetch account by ID (replace with real logic)
-    account = {"id": id, "name": "John Doe", "email": "john@example.com"}
-    return jsonify(account)
+    account = Account.query.get_or_404(id)
+    return jsonify({"id": account.id, "date": account.name, "description": account.email})
