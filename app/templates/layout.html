@@ -14,31 +14,45 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('homepage.show_homepage') }}">Wash Wizard</a>
+            <a class="navbar-brand" href="{{ url_for('homepage.index') }}">Wash Wizard</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('account.list_accounts') }}">Accounts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('appointment.list_appointments') }}">Appointments</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('report.list_reports') }}">Reports</a>
-                    </li>
+                    {% if g.user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container mt-4">
-        {% block content %}
-        <!-- Child templates will override this block -->
-        {% endblock %}
+    <div class="content">
+        <!-- Header -->
+        <header>
+            {% block header %}{% endblock %}
+        </header>
+
+        <!-- Main Content -->
+        <div class="container mt-4">
+            {% block content %}
+            <!-- Child templates will override this block -->
+            {% endblock %}
+
+            {% for message in get_flashed_messages() %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        </div>
     </div>
 
     <!-- Footer -->
