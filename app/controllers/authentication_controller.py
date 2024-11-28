@@ -60,12 +60,13 @@ def login():
         password = request.form['password']
         error = None
         
-        account = db.session.execute(db.select(Account).filter_by(username=username)).scalar_one()
-    
-        if account is None:
+        try:
+            account = db.session.execute(db.select(Account).filter_by(username=username)).scalar_one()
+        except exc.NoResultFound:
             error = 'Incorrect username.'
-        elif not bcrypt.check_password_hash(account.password, password):
-            error = 'Incorrect password.'
+        else:
+            if not bcrypt.check_password_hash(account.password, password):
+                error = 'Incorrect password.'
 
         if error is None:
             session.clear()
