@@ -6,8 +6,11 @@ class Appointment(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
-    description = db.Column(db.String(255), nullable=True)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+    washes = db.Column(db.Integer, nullable=False)
+    dries = db.Column(db.Integer, nullable=False)
+    completed = db.Column(db.Boolean, default=False)
 
     account = db.relationship("Account", backref=db.backref("appointments", lazy=True))
 

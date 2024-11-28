@@ -5,9 +5,11 @@ class Timer(db.Model):
     Timer model for managing timed events.
     """
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'), nullable=False)
     duration = db.Column(db.Integer, nullable=False)  # Duration in seconds
     created_at = db.Column(db.DateTime, default=db.func.now())
+
+    appointment = db.relationship("Appointment", backref=db.backref("timers", lazy=True))
 
     def __repr__(self):
         return f"<Timer {self.name} ({self.duration}s)>"

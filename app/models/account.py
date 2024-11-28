@@ -10,6 +10,10 @@ class Account(db.Model):
     name = db.Column(db.String(80), nullable=False)
     hall = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    points = db.Column(db.Integer, default=0, nullable=False)
+    rewards = db.Column(db.JSON, default=list)
+    status = db.Column(db.String(80), default='No Discounts Yet')
+    is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=db.func.now())
     updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 

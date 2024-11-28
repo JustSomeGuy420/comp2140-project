@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block title %}Schedule{% endblock %}
+
+{% block header %}
+    <h1 class="text-center">Appointments Schedule</h1>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-bordered mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Account ID</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Washes</th>
+                <th>Dries</th>
+                <th>Completed</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ appointment.account_id }}</td>
+                <td>{{ appointment.start_time }}</td>
+                <td>{{ appointment.end_time }}</td>
+                <td>{{ appointment.washes }}</td>
+                <td>{{ appointment.dries }}</td>
+                <td>{{ 'Yes' if appointment.completed else 'No' }}</td>
+                <td>
+                    {% if session.get('user_id') == appointment.account_id %}
+                    <a href="{{ url_for('appointment.edit_appointment', id=appointment.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ url_for('appointment.delete_appointment', id=appointment.id) }}" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+    <a href="{{ url_for('appointment.create_appointment') }}" class="btn btn-primary mt-3">Create New Appointment</a> 
+    
+{% endblock %}

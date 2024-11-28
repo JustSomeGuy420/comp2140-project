@@ -6,7 +6,6 @@ from flask import (
 from sqlalchemy import exc
 from app import bcrypt
 from app.models.account import Account
-#from app.controllers.homepage_controller import homepage_bp
 from app import db
 
 auth_bp = Blueprint('auth', __name__)
@@ -98,6 +97,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
+            flash("Must be logged in.")
             return redirect(url_for('auth.login'))
 
         return view(**kwargs)
