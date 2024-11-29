@@ -17,7 +17,9 @@
             </div>
                 
             <a href="{{ url_for('notice.edit_notice', id=notice.id) }}" class="btn btn-warning btn-sm">Edit</a>
-            <a onclick="return confirm('Your notice will be deleted!');" href="{{ url_for('notice.delete_notice', id=notice.id) }}" class="btn btn-danger btn-sm">Delete</a>
+            <form onsubmit="return confirm('Your notice will be deleted!');" action="{{ url_for('notice.delete_notice', id=notice.id) }}" method="POST" style="display:inline-block;">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
         </article>
     {% endfor %}
 {% endblock %}
