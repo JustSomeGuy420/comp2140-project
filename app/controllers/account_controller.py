@@ -10,6 +10,25 @@ def list_accounts():
     accounts = Account.query.all()
     return jsonify([{"name": a.name, "username": a.username, "hall": a.hall} for a in accounts])
 
+@account_bp.route("/<int:id>/subscribe", methods=["POST"])
+def subscribe(id):
+    account = Account.query.get_or_404(id)
+
+    # Only allow subscription if the user is logged in and is the account owner
+    if account.id != session.get('user_id'):
+        flash("You are not authorized to manage this subscription.")
+        return redirect(url_for("account.account_details", id=account.id))
+
+    # Set subscription to True to opt-in for notifications
+    if not account.subscription:
+        account.subscription = True
+        db.session.commit()
+        flash(f"Subscription successful for {account.name}. You will receive notifications.")
+    else:
+        flash("You are already subscribed.")
+
+    return redirect(url_for("appointment.create_appointment"))
+    
 @account_bp.route("/<int:id>")
 def account_details(id):
     account = Account.query.get(id)
