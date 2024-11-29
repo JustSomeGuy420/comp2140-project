@@ -5,12 +5,14 @@ from flask import (
 )
 from sqlalchemy import exc
 from app.models.appointment import Appointment
+from app.controllers.authentication_controller import login_required
 from app import db
 from app import scheduler
 
 appointment_bp = Blueprint("appointment", __name__)
 
 @appointment_bp.route("/", methods=("GET", "POST"))
+@login_required
 def create_appointment():
     if request.method == "POST":
         _account_id = session.get('user_id')
@@ -62,8 +64,9 @@ def create_appointment():
     return render_template("appointment/create.html")
 
 @appointment_bp.route("/<int:id>/edit", methods=("GET", "POST"))
+@login_required
 def edit_appointment(id):
-    appointment = Appointment.query.get_or_404(id)
+    appointment = Appointment.query.get(id)
     if appointment.account_id != session.get('user_id'):
         flash("You are not authorized to edit this appointment.")
         return redirect(url_for("index"))
@@ -111,8 +114,9 @@ def edit_appointment(id):
     return render_template("appointment/edit.html", appointment=appointment)
 
 @appointment_bp.route("/<int:id>/delete", methods=("POST",))
+@login_required
 def delete_appointment(id):
-    appointment = Appointment.query.get_or_404(id)
+    appointment = Appointment.query.get(id)
     if appointment.account_id != session.get('user_id'):
         flash("You are not authorized to delete this appointment.")
         return redirect(url_for("index"))

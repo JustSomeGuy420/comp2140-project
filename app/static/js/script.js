@@ -3,10 +3,15 @@ function updateTimers() {
     const now = new Date();
 
     timers.forEach(timer => {
+        const startTime = new Date(timer.dataset.startTime);
         const endTime = new Date(timer.dataset.endTime);
+        const start = startTime - now;
         const diff = endTime - now;
 
-        if (diff <= 0) {
+        if (start >= 0) {
+            timer.innerText = "Pending Start";
+        }
+        else if (diff <= 0) {
             timer.innerText = "Completed";
             timer.classList.add("text-success");
         } else {

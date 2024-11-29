@@ -1,21 +1,26 @@
 from flask import Blueprint, jsonify, request, flash, render_template
 from app.models.account import Account
+from app.controllers.authentication_controller import login_required
 from app import db
+from sqlalchemy import exc
 
 # Create a blueprint for account-related routes
 account_bp = Blueprint("account", __name__)
 
 @account_bp.route("/")
+@login_required
 def list_accounts():
     accounts = Account.query.all()
     return jsonify([{"name": a.name, "username": a.username, "hall": a.hall} for a in accounts])
 
 @account_bp.route("/<int:id>")
+@login_required
 def account_details(id):
     account = Account.query.get(id)
     return jsonify({"name": account.name, "email": account.email})
 
 @account_bp.route('/loyalty')
+@login_required
 def loyalty():
     return render_template('account/loyal.html')
 

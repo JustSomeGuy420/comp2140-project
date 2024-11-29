@@ -11,7 +11,7 @@
         <thead class="table-dark">
             <tr id="appointment-row">
                 <th><i class="fa-solid fa-users" style="color: #ffffff;"></i></th>
-                <th>Account ID</th>
+                <th>Name</th>
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Washes</th>
@@ -25,7 +25,7 @@
             {% for appointment in appointments %}
             <tr id="appointment-row-else">
                 <td>{{ loop.index }}</td>
-                <td>{{ appointment.account_id }}</td>
+                <td>{{ appointment.account.name }}</td>
                 <td>{{ appointment.start_time.strftime('%I:%M %p') }}</td>
                 <td>{{ appointment.end_time.strftime('%I:%M %p') }}</td>
                 <td>{{ appointment.washes }}</td>
@@ -34,7 +34,8 @@
                 <td>
                     <span 
                         class="remaining-time"
-                        data-end-time="{{ appointment.end_time.strftime('%Y-%m-%dT%H:%M:%S') }}">
+                        data-end-time="{{ appointment.end_time.strftime('%Y-%m-%dT%H:%M:%S') }}"
+                        data-start-time="{{ appointment.start_time.strftime('%Y-%m-%dT%H:%M:%S') }}">
                     </span>
                 </td>
                 <td>

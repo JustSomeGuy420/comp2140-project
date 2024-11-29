@@ -33,12 +33,14 @@ def register():
 
         if error is None:
             try:
+                _is_admin = Account.query.first() == None
                 account = Account(
                     username = _username,
                     password = bcrypt.generate_password_hash(_password).decode('utf-8'),
                     name = _name,
                     hall = _hall,
-                    email = _email
+                    email = _email,
+                    is_admin = _is_admin
                 )
                 db.session.add(account)
                 db.session.commit()

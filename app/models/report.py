@@ -1,9 +1,7 @@
 from app import db
 
 class Report(db.Model):
-    """
-    Report model for generating and tracking reports.
-    """
+    # Report model for generating and tracking reports.
     id = db.Column(db.Integer, primary_key=True)
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)

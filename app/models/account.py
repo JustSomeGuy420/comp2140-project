@@ -1,9 +1,7 @@
 from app import db
 
 class Account(db.Model):
-    """
-    Account model representing user accounts in the system.
-    """
+    # Account model representing user accounts in the system.
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), nullable=False)
     password = db.Column(db.String(120), nullable=False)
