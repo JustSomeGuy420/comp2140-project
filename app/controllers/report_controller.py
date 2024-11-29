@@ -31,7 +31,9 @@ def create_report():
         if error is None:
             new_report = Report(
                 title=_title,
-                content=_content
+                content=_content,
+                account_id=session.get('user_id'),
+                account=g.user
             )
             db.session.add(new_report)
             db.session.commit()

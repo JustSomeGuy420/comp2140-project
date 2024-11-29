@@ -51,5 +51,15 @@
         </tbody>        
     </table>
     <a href="{{ url_for('appointment.create_appointment') }}" class="btn btn-primary mt-3">Create New Appointment</a> 
+
+    <div id="confirmationModal">
+        <div class="modal-content">
+            <h4 class="text-center">Laundry Completed</h4>
+            <p class="text-center">Continue</p>
+            <div class="modal-buttons">
+                <button id="modalConfirm" class="btn btn-success">Yes</button>
+            </div>
+        </div>
+    </div>
     
 {% endblock %}
