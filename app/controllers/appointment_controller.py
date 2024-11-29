@@ -143,6 +143,15 @@ def mark_completed():
                 appointment.completed = True
                 db.session.commit()
 
+                # Create a notification when the appointment is completed
+                notification = Notification(
+                    account_id=appointment.account_id,
+                    message=f"Your appointment with ID {appointment.id} has been completed."
+                )
+                db.session.add(notification)
+                db.session.commit()
+
+
 # Task to remove all appointments at midnight
 def delete_appointments():
     with scheduler.app.app_context():
