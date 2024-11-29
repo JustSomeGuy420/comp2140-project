@@ -151,7 +151,7 @@ def delete_appointments():
 scheduler.add_job(
     func=mark_completed,
     trigger="interval",
-    seconds=60,
+    seconds=10,
     id="mark_completed",
     name="mark_completed",
     replace_existing=True,

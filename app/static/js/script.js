@@ -11,11 +11,7 @@ function updateTimers() {
         if (start >= 0) {
             timer.innerText = "Pending Start";
         }
-        else if (diff == 0){
-            const modal = document.getElementById("confirmationModal");
-            modal.style.display = "block"; // Show the modal
-        }
-        else if (diff < 0) {
+        else if (diff <= 0) {
             timer.innerText = "Completed";
             timer.classList.add("text-success");
         } else {
