@@ -9,10 +9,7 @@ def list_timers():
     timers = Timer.query.all()
     return jsonify([{"id": t.id, "name": t.name, "duration": t.duration} for t in timers])
 
-@timer_bp.route("/", methods=["POST"])
-def create_timer():
-    data = request.json
-    new_timer = Timer(name=data["name"], duration=data["duration"])
+def create_timer(appointment_id, end_time, appointment):
+    new_timer = Timer(appointment_id=appointment_id, end_time=end_time, appointment=appointment)
     db.session.add(new_timer)
     db.session.commit()
-    return jsonify({"message": "Timer created successfully"}), 201

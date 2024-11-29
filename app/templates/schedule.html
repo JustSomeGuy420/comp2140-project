@@ -24,11 +24,17 @@
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ appointment.account_id }}</td>
-                <td>{{ appointment.start_time }}</td>
-                <td>{{ appointment.end_time }}</td>
+                <td>{{ appointment.start_time.strftime('%I:%M %p') }}</td>
+                <td>{{ appointment.end_time.strftime('%I:%M %p') }}</td>
                 <td>{{ appointment.washes }}</td>
                 <td>{{ appointment.dries }}</td>
                 <td>{{ 'Yes' if appointment.completed else 'No' }}</td>
+                <td>
+                    <span 
+                        class="remaining-time"
+                        data-end-time="{{ appointment.end_time.strftime('%Y-%m-%dT%H:%M:%S') }}">
+                    </span>
+                </td>
                 <td>
                     {% if session.get('user_id') == appointment.account_id %}
                     <a href="{{ url_for('appointment.edit_appointment', id=appointment.id) }}" class="btn btn-warning btn-sm">Edit</a>
