@@ -28,3 +28,8 @@
 .modal-buttons .btn {
     width: 45%; /* Ensures buttons are uniform in size */
 }
+
+#head{
+    color: blue;
+    flex: auto;
+}
