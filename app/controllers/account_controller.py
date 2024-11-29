@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, flash
+from flask import Blueprint, jsonify, request, flash, render_template
 from app.models.account import Account
 from app import db
 
@@ -14,6 +14,10 @@ def list_accounts():
 def account_details(id):
     account = Account.query.get(id)
     return jsonify({"name": account.name, "email": account.email})
+
+@account_bp.route('/loyalty')
+def loyalty():
+    return render_template('account/loyal.html')
 
 def add_points(account:Account):
     account.points += 5
