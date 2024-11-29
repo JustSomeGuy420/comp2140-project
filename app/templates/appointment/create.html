@@ -20,6 +20,14 @@
       <label for="dries" class="form-label">Number of Dries</label>
       <input type="number" id="dries" name="dries" class="form-control" min="1" required>
     </div>
+
+    <!-- Subscribe button logic -->
+    {% if not current_user.subscription %}
+      <button type="button" class="btn btn-success mt-3" id="subscribeButton">Subscribe to Notifications</button>
+    {% else %}
+      <button type="button" class="btn btn-secondary mt-3" disabled>Subscribed to Notifications</button>
+    {% endif %}
+
     <button type="submit" class="btn btn-success confirm-submit">Submit</button>
     <a href="{{ url_for('homepage.index') }}" class="btn btn-secondary">Cancel</a>
   </form>
