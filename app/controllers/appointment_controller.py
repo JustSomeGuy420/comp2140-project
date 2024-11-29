@@ -6,6 +6,7 @@ from flask import (
 from sqlalchemy import exc
 from app.models.appointment import Appointment
 from app import db
+from app import scheduler
 
 appointment_bp = Blueprint("appointment", __name__)
 
@@ -23,16 +24,15 @@ def create_appointment():
         else:
             try:
                 # Parse start time
-                start_time = datetime.strptime(_start_time, "%H:%M").time()
+                _start_time = datetime.strptime(_start_time, "%H:%M").time()
                 
                 # Calculate end time
                 wash_duration = int(_washes) * 40  # in minutes
                 dry_duration = int(_dries) * 45  # in minutes
                 total_duration = wash_duration + dry_duration
                 
-                start_datetime = datetime.combine(datetime.today(), start_time)
-                end_datetime = start_datetime + timedelta(minutes=total_duration)
-                end_time = end_datetime.time()
+                start_time = datetime.combine(datetime.today(), _start_time)
+                end_time = start_time + timedelta(minutes=total_duration)
                 
                 # Check for overlapping appointments
                 overlapping_appointments = Appointment.query.filter(
@@ -55,7 +55,7 @@ def create_appointment():
             )
             db.session.add(new_appointment)
             db.session.commit()
-            return redirect(url_for("homepage.index"))
+            return redirect(url_for("index"))
         
         flash(error)
         
@@ -66,7 +66,7 @@ def edit_appointment(id):
     appointment = Appointment.query.get_or_404(id)
     if appointment.account_id != session.get('user_id'):
         flash("You are not authorized to edit this appointment.")
-        return redirect(url_for("homepage.index"))
+        return redirect(url_for("index"))
 
     if request.method == "POST":
         _start_time = request.form.get('start_time')
@@ -75,14 +75,16 @@ def edit_appointment(id):
         error = None
 
         try:
-            start_time = datetime.strptime(_start_time, "%H:%M").time()
+            # Parse start time
+            _start_time = datetime.strptime(_start_time, "%H:%M").time()
+                
+            # Calculate end time
             wash_duration = int(_washes) * 40  # in minutes
             dry_duration = int(_dries) * 45  # in minutes
             total_duration = wash_duration + dry_duration
-
-            start_datetime = datetime.combine(datetime.today(), start_time)
-            end_datetime = start_datetime + timedelta(minutes=total_duration)
-            end_time = end_datetime.time()
+                
+            start_time = datetime.combine(datetime.today(), _start_time)
+            end_time = start_time + timedelta(minutes=total_duration)
 
             overlapping_appointments = Appointment.query.filter(
                 Appointment.start_time < end_time,
@@ -102,7 +104,7 @@ def edit_appointment(id):
             appointment.dries = int(_dries)
             db.session.commit()
             flash("Appointment updated successfully!")
-            return redirect(url_for("homepage.index"))
+            return redirect(url_for("index"))
 
         flash(error)
 
@@ -113,13 +115,50 @@ def delete_appointment(id):
     appointment = Appointment.query.get_or_404(id)
     if appointment.account_id != session.get('user_id'):
         flash("You are not authorized to delete this appointment.")
-        return redirect(url_for("homepage.index"))
+        return redirect(url_for("index"))
 
     db.session.delete(appointment)
     db.session.commit()
     flash("Appointment deleted successfully!")
-    return redirect(url_for("homepage.index"))
+    return redirect(url_for("index"))
 
 def list_appointments():
     appointments = Appointment.query.all()
     return sorted(appointments, key = lambda appointment: appointment.start_time)
+
+# Task to mark appointments as completed
+def mark_completed():
+    with scheduler.app.app_context():
+        now = datetime.now()
+        appointments = Appointment.query.filter_by(completed=False).all()
+        for appointment in appointments:
+            if appointment.end_time <= now:
+                appointment.completed = True
+                db.session.commit()
+
+# Task to remove all appointments at midnight
+def delete_appointments():
+    with scheduler.app.app_context():
+        db.session.query(Appointment).delete()  # Delete all appointments
+        db.session.commit()
+        print("All appointments have been removed.")  # Log confirmation
+
+
+scheduler.add_job(
+    func=mark_completed,
+    trigger="interval",
+    seconds=60,
+    id="mark_completed",
+    name="mark_completed",
+    replace_existing=True,
+)
+
+scheduler.add_job(
+    func=delete_appointments,
+    trigger="cron",
+    hour=0,
+    minute=0,
+    id="delete_appointments",
+    name="delete_appointments",
+    replace_existing=True,
+)

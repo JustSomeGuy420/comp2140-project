@@ -6,7 +6,7 @@ class Timer(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'), nullable=False)
-    end_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.DateTime, nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.now())
 
     appointment = db.relationship("Appointment", backref=db.backref("timers", lazy=True))

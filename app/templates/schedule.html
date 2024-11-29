@@ -17,6 +17,7 @@
                 <th>Washes</th>
                 <th>Dries</th>
                 <th>Completed</th>
+                <th>Remaining Time</th>
                 <th><i class="fa-solid fa-pen" style="color: #ffffff;"></i></th>
             </tr>
         </thead>
@@ -39,7 +40,7 @@
                 <td>
                     {% if session.get('user_id') == appointment.account_id %}
                     <a href="{{ url_for('appointment.edit_appointment', id=appointment.id) }}" class="btn btn-warning btn-sm" style="display:inline-block; margin: 5%;">Edit</a> 
-                    <form action="{{ url_for('appointment.delete_appointment', id=appointment.id) }}" method="POST" style="display:inline-block;">
+                    <form onsubmit="return confirm('Your appointment will be deleted!');" action="{{ url_for('appointment.delete_appointment', id=appointment.id) }}" method="POST" style="display:inline-block;">
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     </form>
                     {% endif %}

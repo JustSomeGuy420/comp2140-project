@@ -6,8 +6,8 @@ class Appointment(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    start_time = db.Column(db.Time, nullable=False)
-    end_time = db.Column(db.Time, nullable=False)
+    start_time = db.Column(db.DateTime, nullable=False)
+    end_time = db.Column(db.DateTime, nullable=False)
     washes = db.Column(db.Integer, nullable=False)
     dries = db.Column(db.Integer, nullable=False)
     completed = db.Column(db.Boolean, default=False)
