@@ -6,8 +6,8 @@ notification_bp = Blueprint("notification", __name__)
 
 @notification_bp.route("/", methods=["GET"])
 def list_notifications():
-    notifications = Notification.query.all()
-    return jsonify([{"id": n.id, "message": n.message, "is_read": n.is_read} for n in notifications])
+    notifications = Notification.query.filter_by(is_read=False).all()  # Only unread notifications
+    return jsonify([{"id": n.id, "message": n.message, "is_read": n.is_read, "created_at": n.created_at} for n in notifications])
 
 @notification_bp.route("/<int:id>/mark_as_read", methods=["POST"])
 def mark_as_read(id):
