@@ -3,7 +3,7 @@
 {% block header %}
   <h1 class="text-center">{% block title %}Reports{% endblock %}</h1>
 {% endblock %}
-
+<hr>
 {% block content %}
     <a href="{{ url_for('report.create_report') }}" class="btn btn-primary mt-3">Create New Report</a>
     {% for report in reports %}

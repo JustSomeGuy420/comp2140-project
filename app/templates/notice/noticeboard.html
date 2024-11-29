@@ -8,6 +8,7 @@
     {% if g.user.is_admin %}
     <a href="{{ url_for('notice.create_notice') }}" class="btn btn-primary mt-3">Create New Notice</a>
     {% endif %}
+    <hr>
     {% for notice in notices %}
         <article>
             <div>

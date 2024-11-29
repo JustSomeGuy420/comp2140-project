@@ -21,7 +21,7 @@ def list_reports():
 @login_required
 def create_report():
     if request.method == "POST":
-        _title = session.get('issue')
+        _title = request.form.get('issue')
         _content = request.form.get('message')
         error = None
 
@@ -50,7 +50,7 @@ def edit_report(id):
         return redirect(url_for("index"))
 
     if request.method == "POST":
-        _title = session.get('issue')
+        _title = request.form.get('issue')
         _content = request.form.get('message')
         error = None
 

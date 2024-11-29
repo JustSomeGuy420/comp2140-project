@@ -18,7 +18,7 @@ def list_notices():
 @login_required
 def create_notice():
     if request.method == "POST":
-        _title = session.get('title')
+        _title = request.form.get('title')
         _content = request.form.get('content')
         error = None
 
@@ -47,7 +47,7 @@ def edit_notice(id):
         return redirect(url_for("index"))
 
     if request.method == "POST":
-        _title = session.get('title')
+        _title = request.form.get('title')
         _content = request.form.get('content')
         error = None
 
