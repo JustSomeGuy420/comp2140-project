@@ -16,6 +16,8 @@ class Account(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=db.func.now())
     updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
+    subscription = db.Column(db.Boolean, default=False, nullable=False)
+
 
     def __repr__(self):
         return f"<Account {self.name}>"
