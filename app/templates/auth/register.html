@@ -24,20 +24,20 @@
     </div>
     <div class="mb-3">
       <label for="hall" class="form-label">Hall of Residence</label>
-      <select class="form-control" id="hall">
+      <select class="form-control" name="hall" id="hall">
         <option value="" selected disabled hidden>--Select--</option>
-        <option>A.Z. Preston Hall</option>
-        <option>Chancellor Hall</option>
-        <option>Elsa Leo Rhynie Hall</option>
-        <option>George Alleyne Hall</option>
-        <option>Irvine Hall</option>
-        <option>Leslie Robinsion Hall</option>
-        <option>Mary Seacole Hall</option>
-        <option>Rex Nettleford Hall</option>
-        <option>Taylor Hall</option>
+        <option value="A.Z. Preston Hall">A.Z. Preston Hall</option>
+        <option value="Chancellor Hall">Chancellor Hall</option>
+        <option value="Elsa Leo Rhynie Hall">Elsa Leo Rhynie Hall</option>
+        <option value="George Alleyne Hall">George Alleyne Hall</option>
+        <option value="Irvine Hall">Irvine Hall</option>
+        <option value="Leslie Robinsion Hall">Leslie Robinsion Hall</option>
+        <option value="Mary Seacole Hall">Mary Seacole Hall</option>
+        <option value="Rex Nettleford Hall">Rex Nettleford Hall</option>
+        <option value="Taylor Hall">Taylor Hall</option>
       </select>
     </div>
-    <button type="submit" class="btn btn-success confirm-submit">Register</button>
+    <button type="submit" class="btn btn-success">Register</button>
     <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
   </form>
 {% endblock %}
