@@ -46,6 +46,13 @@ def create_appointment():
                 error = "Invalid start time format."
 
         if error is None:
+            # Check if the user is already subscribed (has a valid subscription)
+            account = Account.query.get(_account_id)
+            if not account.subscription:
+                # Handle subscription
+                account.subscription = True
+                db.session.commit()
+
             new_appointment = Appointment(
                 account_id=_account_id,
                 start_time=start_time,
